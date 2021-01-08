@@ -63,7 +63,7 @@ const defaultItems = [];
 // ************ DYNAMIC ROUTING ***************
 app.get("/:listName", (req, res) => {
   //to handle upper/lowercase
-  const page = _.lowerCase(req.params.listName);
+  const page = _.capitalize(req.params.listName);
   List.findOne({
     name: page
   }, (err, foundList) => {
@@ -169,15 +169,31 @@ app.post("/", function(req, res) {
 
 app.post("/delete", (req, res) => {
   const checkedItemId = req.body.checkbox;
+  const listName = req.body.listName;
 
-  Item.findByIdAndRemove(checkedItemId, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("deleted");
-      res.redirect("/");
+  if(listName === "Default"){
+    Item.findByIdAndRemove(checkedItemId, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("deleted");
+        res.redirect("/");
+      }
+    })
+  }else{
+    //combining mongoDB operator $pull with mongoose findOneandUpdate
+    //The $pull operator removes from an existing array all instances of a value or values that match a specified condition.
+    const filter = {name: listName};
+    const update_cmd = {$pull: { items: {_id: checkedItemId}}};
+    //foundList, is the list that findOne and Update found
+    List.findOneAndUpdate(filter,update_cmd, (err,foundList)=>{
+    if(!err){
+      res.redirect("/"+listName);
     }
-  })
+  });
+  }
+
+
 });
 
 app.get("/work", function(req, res) {
