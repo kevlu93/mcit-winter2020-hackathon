@@ -1,4 +1,5 @@
-//jshint esversion:6
+//should be added at very beginning, to use environment varialbes
+require('dotenv').config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -8,20 +9,34 @@ const _ = require("lodash");
 
 const app = express();
 
+//ejs looks for html templates in views folder. Must be called "views" with s
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+//When deploying webpage, folder that is checked by express for other files
 app.use(express.static("public"));
 
+// // ****set-up local server - mongoose **********
+// mongoose.connect("mongodb://localhost:27017/todolistDB", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useFindAndModify: false
+// });
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", {
+
+// ****set-up remote server - mongoose **********
+//Connect to MongoDB Atlas
+//Coment out when testing locally and replace with above
+const user = process.env.user;
+const password = process.env.password;
+mongoose.connect("mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/toDoDB?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
 });
-
 
 //Create Schema for new todo items
 const itemSchema = new mongoose.Schema({
@@ -56,41 +71,40 @@ app.post("/", function(req, res) {
 
   if (itemName.length !== 0) {
 
-  const newItem = new Item({
-    name: itemName
-  });
-
-//  console.log("Length" + itemName.length);
-
-  if (listName === "General") {
-    //save new item to collection
-    Item.insertMany(newItem, (err) => {
-      if (!err) {
-        console.log("All elements added");
-        //to show default items just added
-        res.redirect("/");
-      }
+    const newItem = new Item({
+      name: itemName
     });
-    // console.log(newItem);
-    // res.redirect("/");
-  } else { //custom list
-    List.findOne({
-      name: listName
-    }, (err, foundList) => {
-      foundList.items.push(newItem);
-      foundList.save();
+
+    //  console.log("Length" + itemName.length);
+
+    if (listName === "General") {
+      //save new item to collection
+      Item.insertMany(newItem, (err) => {
+        if (!err) {
+          console.log("All elements added");
+          //to show default items just added
+          res.redirect("/");
+        }
+      });
+      // console.log(newItem);
+      // res.redirect("/");
+    } else { //custom list
+      List.findOne({
+        name: listName
+      }, (err, foundList) => {
+        foundList.items.push(newItem);
+        foundList.save();
+        res.redirect("/" + listName);
+      })
+    }
+  } else {
+    //window.alert("Task Text cannot be empty");
+    if (listName === "General") {
+      res.redirect("/");
+    } else { //custom list
       res.redirect("/" + listName);
-    })
+    }
   }
-}
-else{
-  //window.alert("Task Text cannot be empty");
-  if (listName === "General") {
-    res.redirect("/");
-  } else { //custom list
-    res.redirect("/" + listName);
-  }
-}
 });
 
 // ********ADD DEFAULT ELEMENTS TO MONGODB**************
@@ -140,7 +154,7 @@ app.get("/:listName", (req, res) => {
 
 app.get("/", function(req, res) {
 
-  const day = date.getDate();
+  // const day = date.getDate();
 
   // ********IMPORT DB************
   // find all elements = {}
@@ -169,6 +183,8 @@ app.get("/", function(req, res) {
   //
   //   }
   // });
+
+
   Item.find({}, (err, items) => {
     //  console.log(items);
     if (err) {
