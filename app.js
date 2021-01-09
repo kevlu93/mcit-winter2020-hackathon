@@ -1,5 +1,6 @@
 //should be added at very beginning, to use environment varialbes
-require('dotenv').config();
+//comment out dotenv and enter environment variables on heroku when deploying, else decoment
+//require('dotenv').config();
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -30,9 +31,10 @@ app.use(express.static("public"));
 // ****set-up remote server - mongoose **********
 //Connect to MongoDB Atlas
 //Coment out when testing locally and replace with above
-const user = process.env.user;
-const password = process.env.password;
-mongoose.connect("mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/toDoDB?retryWrites=true&w=majority", {
+const user = process.env.USER;
+const password = process.env.PASSWORD;
+const url = "mongodb+srv://"+user+":"+password+"@clusterdefault.faspm.mongodb.net/toDoDB?retryWrites=true&w=majority"
+mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
