@@ -54,16 +54,18 @@ app.post("/", function(req, res) {
   const itemName = req.body.newItem;
   const listName = req.body.list;
 
+  if (itemName.length !== 0) {
+
   const newItem = new Item({
     name: itemName
-  })
+  });
+
+//  console.log("Length" + itemName.length);
 
   if (listName === "General") {
     //save new item to collection
     Item.insertMany(newItem, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
+      if (!err) {
         console.log("All elements added");
         //to show default items just added
         res.redirect("/");
@@ -80,6 +82,15 @@ app.post("/", function(req, res) {
       res.redirect("/" + listName);
     })
   }
+}
+else{
+  //window.alert("Task Text cannot be empty");
+  if (listName === "General") {
+    res.redirect("/");
+  } else { //custom list
+    res.redirect("/" + listName);
+  }
+}
 });
 
 // ********ADD DEFAULT ELEMENTS TO MONGODB**************
@@ -159,7 +170,7 @@ app.get("/", function(req, res) {
   //   }
   // });
   Item.find({}, (err, items) => {
-  //  console.log(items);
+    //  console.log(items);
     if (err) {
       console.log(err);
     } else {
@@ -176,7 +187,7 @@ app.post("/delete", (req, res) => {
   const checkedItemId = req.body.checkbox;
   const listName = req.body.listName;
 
-  if(listName === "General"){
+  if (listName === "General") {
     Item.findByIdAndRemove(checkedItemId, (err) => {
       if (err) {
         console.log(err);
@@ -185,17 +196,25 @@ app.post("/delete", (req, res) => {
         res.redirect("/");
       }
     })
-  }else{
+  } else {
     //combining mongoDB operator $pull with mongoose findOneandUpdate
     //The $pull operator removes from an existing array all instances of a value or values that match a specified condition.
-    const filter = {name: listName};
-    const update_cmd = {$pull: { items: {_id: checkedItemId}}};
+    const filter = {
+      name: listName
+    };
+    const update_cmd = {
+      $pull: {
+        items: {
+          _id: checkedItemId
+        }
+      }
+    };
     //foundList, is the list that findOne and Update found
-    List.findOneAndUpdate(filter,update_cmd, (err,foundList)=>{
-    if(!err){
-      res.redirect("/"+listName);
-    }
-  });
+    List.findOneAndUpdate(filter, update_cmd, (err, foundList) => {
+      if (!err) {
+        res.redirect("/" + listName);
+      }
+    });
   }
 
 
