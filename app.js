@@ -18,7 +18,8 @@ app.use(express.static("public"));
 
 mongoose.connect("mongodb://localhost:27017/todolistDB", {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 });
 
 
@@ -44,19 +45,56 @@ const Item = mongoose.model('Item', itemSchema);
 
 const List = mongoose.model('List', listSchema);
 
+app.get("/about", function(req, res) {
+  res.render("about");
+});
+
+app.post("/", function(req, res) {
+
+  const itemName = req.body.newItem;
+  const listName = req.body.list;
+
+  const newItem = new Item({
+    name: itemName
+  })
+
+  if (listName === "General") {
+    //save new item to collection
+    Item.insertMany(newItem, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("All elements added");
+        //to show default items just added
+        res.redirect("/");
+      }
+    });
+    // console.log(newItem);
+    // res.redirect("/");
+  } else { //custom list
+    List.findOne({
+      name: listName
+    }, (err, foundList) => {
+      foundList.items.push(newItem);
+      foundList.save();
+      res.redirect("/" + listName);
+    })
+  }
+});
+
 // ********ADD DEFAULT ELEMENTS TO MONGODB**************
 //CREATE elements
-const flour = new Item({
-  name: "Buy flour",
-});
-
-const butter = new Item({
-  name: "Buy butter",
-});
-
-const milk = new Item({
-  name: "Buy milk",
-})
+// const flour = new Item({
+//   name: "Buy flour",
+// });
+//
+// const butter = new Item({
+//   name: "Buy butter",
+// });
+//
+// const milk = new Item({
+//   name: "Buy milk",
+// })
 
 const defaultItems = [];
 
@@ -126,7 +164,7 @@ app.get("/", function(req, res) {
       console.log(err);
     } else {
       res.render("list", {
-        listTitle: "Default",
+        listTitle: "General",
         newListItems: items
       });
     }
@@ -134,44 +172,11 @@ app.get("/", function(req, res) {
 
 });
 
-app.post("/", function(req, res) {
-
-  const itemName = req.body.newItem;
-  const listName = req.body.list;
-
-  const newItem = new Item({
-    name: itemName
-  })
-
-  if (listName === "Default") {
-    //save new item to collection
-    Item.insertMany(newItem, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("All elements added");
-        //to show default items just added
-        res.redirect("/");
-      }
-    });
-    // console.log(newItem);
-    // res.redirect("/");
-  } else { //custom list
-    List.findOne({
-      name: listName
-    }, (err, foundList) => {
-      foundList.items.push(newItem);
-      foundList.save();
-      res.redirect("/" + listName);
-    })
-  }
-});
-
 app.post("/delete", (req, res) => {
   const checkedItemId = req.body.checkbox;
   const listName = req.body.listName;
 
-  if(listName === "Default"){
+  if(listName === "General"){
     Item.findByIdAndRemove(checkedItemId, (err) => {
       if (err) {
         console.log(err);
@@ -196,16 +201,7 @@ app.post("/delete", (req, res) => {
 
 });
 
-app.get("/work", function(req, res) {
-  res.render("list", {
-    listTitle: "Work List",
-    newListItems: workItems
-  });
-});
 
-app.get("/about", function(req, res) {
-  res.render("about");
-});
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
