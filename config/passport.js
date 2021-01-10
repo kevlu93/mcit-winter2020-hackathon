@@ -5,7 +5,7 @@ const User = require('../app/models/user');
 
 // expose this function to our app 
 module.exports = function(passport) {
-    //set up passport so that is we have persistent login sessions, and the ability to serialize and deserialize the user
+    //set up passport so that we have persistent login sessions, and the ability to serialize and deserialize the user
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
         done(null, user.id);
@@ -20,7 +20,7 @@ module.exports = function(passport) {
 
     //set up local sign up strategy
     passport.use('local-signup', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
+            // by default, local strategy uses username and password
             usernameField : 'username',
             passwordField : 'password',
             passReqToCallback : true // allows us to pass back the entire request to the callback
@@ -31,12 +31,13 @@ module.exports = function(passport) {
             // User.findOne wont fire unless data is sent back
             process.nextTick(function() {
 
-            //check is username exists
+            //check is username exists in the user database
             User.findOne({ 'local.username' :  username}, function(err, user) {
                 // if there are any errors, return the error
                 if (err)
                     return done(err);
 
+                //if the user already exists, don't do anything
                 if (user) {
                     return done(null, false);
                 } else {
@@ -59,6 +60,10 @@ module.exports = function(passport) {
         });
     }));
 
+    /**
+     * This function runs the local login strategy.
+     * If the user is authenticated successfully, return the user
+     */
     passport.use('local-login', new LocalStrategy({
             usernameField : 'username',
             passwordField : 'password',
@@ -78,7 +83,7 @@ module.exports = function(passport) {
                 // if the user is found but the password is wrong
                 if (!user.validPassword(password))
                     return done(null, false);
-
+                //else successfully return the user
                 return done(null, user);
             });
 

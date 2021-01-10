@@ -1,6 +1,9 @@
+//should be added at very beginning, to use environment varialbes
+//comment out dotenv and enter environment variables on heroku when deploying, else decoment
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 8080;
 const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
@@ -10,10 +13,18 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-const appDb = require('./config/database.js');
+//const appDb = require('./config/database.js');
+appDbUrl = "mongodb://localhost:27017/todolistDB"
+
+// ****set-up remote server - mongoose **********
+//Connect to MongoDB Atlas
+//Coment out when testing locally and replace with above
+//const user = process.env.user;
+//const password = process.env.password;
+//appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/toDoDB?retryWrites=true&w=majority"
 
 //configure db and passports
-mongoose.connect(appDb.url,
+mongoose.connect(appDbUrl,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -32,6 +43,7 @@ app.use(bodyParser.urlencoded({
 
 //set up ejs and set the static files directory
 app.set('view engine', 'ejs');
+//When deploying webpage, folder that is checked by express for other files
 app.use(express.static('public'))
 
 //setup passport
@@ -49,5 +61,11 @@ require('./app/routes.js')(app, passport);
 require('./app/manageTasks.js')(app);
 
 //start the server
-app.listen(port)
-console.log('Running on port ' + port);
+let port = process.env.PORT;
+if  (port == null || port == "") {
+    port = 3000;
+}
+
+app.listen(port, function() {
+    console.log("Server listening on port" + port);
+  });

@@ -1,8 +1,12 @@
+/**
+ * Generates the User model for our database
+ * A user simply contains their username and password
+ */
 const mongoose = require('mongoose');
 const bcrypt   = require('bcryptjs');
 
 // define the schema for our user model
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
 
     local : {
         username : String,

@@ -1,3 +1,9 @@
+/**
+ * Creates the Item schema
+ * Items know the user who created them, as well as the list they are in
+ * They also know whether they have been completed or not
+ * Potential future revisions would be to restructure items as a subdocument of lists
+ */
 const mongoose = require('mongoose');
 
 const itemSchema = new mongoose.Schema({

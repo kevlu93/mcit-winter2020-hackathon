@@ -16,6 +16,7 @@
         </div>
         <!-- to send data to identify right list that is hidden from user -->
         <input type="hidden" name="listName" value="<%= listTitle %>"></input>
+        <!-- sends data to identify correct userid and listid-->
         <input type="hidden" name="userID" value="<%= userId %>"></input>
         <input type="hidden" name="listID" value="<%= listId %>"></input>
       </form>
@@ -23,6 +24,7 @@
 
       <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off" required>
+        <!-- sends list name, list id, and user id to the getter in manageTasks.js-->
         <button type="submit" name="list" value = <%= listTitle%>>+</button>
         <input type="hidden" name="userid" value ="<%= userId %>"></input>
         <input type="hidden" name="listid" value = "<%= listId %>"></form></input>
@@ -30,8 +32,9 @@
   </div>
 
   <div class="box">
-    <p>Take a look at what the community has recently completed!</p>
+    <p>Your completed tasks:</p>
     <ul class="list-group">
+      <!--goes through each Item from the to do array and prints the name as a list entry-->
       <% completedItems.forEach( (item)=>{ %>
       <li class = "list-group-item"><%= item.name %></li>
       <% }); %>
