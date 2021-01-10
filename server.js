@@ -12,7 +12,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const mongodbStore = require('connect-mongo')(session);
+const MemoryStore = require('memorystore')(session);
 
 
 // //const appDb = require('./config/database.js'); 
@@ -61,13 +61,9 @@ app.use(session({
   secret: 'secret',
   resave: true,
   saveUninitialized: true,
-  store: new mongodbStore({
-    mongooseConnection: mongoose.connection,
-    touchAfter: 24 * 3600
-  }),
-  cookie: {
-    maxAge: 1000 * 60 * 15
-  }
+  store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    })
 }))
 app.use(passport.initialize());
 app.use(passport.session());
