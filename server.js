@@ -25,10 +25,16 @@ appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mon
 
 //configure db and passports
 mongoose.connect(appDbUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-});
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  }.then(() => {
+    console.log('connect: success')
+  }).catch(err => {
+    console.log('connect: error')
+    throw err;
+  })
+}
 require('./config/passport')(passport);
 
 //setup express
