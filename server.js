@@ -22,7 +22,9 @@ const MemoryStore = require('memorystore')(session)
 // Coment out when testing locally and replace with above
 const user = process.env.user;
 const password = process.env.password;
-appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority"
+// appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority"
+
+appDbUrl = "mongodb://"+user+":"+ password + "@clusterdefault-shard-00-00.faspm.mongodb.net:27017,clusterdefault-shard-00-01.faspm.mongodb.net:27017,clusterdefault-shard-00-02.faspm.mongodb.net:27017/tododb?ssl=true&replicaSet=atlas-p28bkx-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 //configure db and passports
 mongoose.connect(appDbUrl, {
@@ -60,7 +62,7 @@ app.use(session({
   saveUninitialized: false,
   store: new MemoryStore({
       checkPeriod: 86400000 // prune expired entries every 24h
-    }),
+    })
 }))
 app.use(passport.initialize());
 app.use(passport.session());
