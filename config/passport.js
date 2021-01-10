@@ -5,18 +5,7 @@ const User = require('../app/models/user');
 
 // expose this function to our app 
 module.exports = function(passport) {
-    //set up passport so that we have persistent login sessions, and the ability to serialize and deserialize the user
-    // used to serialize the user for the session
-    passport.serializeUser(function(user, done) {
-        done(null, user.id);
-    });
 
-    // used to deserialize the user
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
-    });
 
     //set up local sign up strategy
     passport.use('local-signup', new LocalStrategy({

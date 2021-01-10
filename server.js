@@ -14,7 +14,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const MemoryStore = require('memorystore')(session);
 
-
+const User = require('./app/models/user.js');
 // //const appDb = require('./config/database.js'); 
 appDbUrl = "mongodb://localhost:27017/todolistDB"
 
@@ -67,7 +67,18 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+//set up passport so that we have persistent login sessions, and the ability to serialize and deserialize the user
+// used to serialize the user for the session
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+// used to deserialize the user
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
 
 //start routes
 require('./app/routes.js')(app, passport);
