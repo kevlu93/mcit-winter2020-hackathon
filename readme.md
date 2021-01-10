@@ -16,40 +16,31 @@ Include the link to your Devpost project page here: [Devpost](https://...)
 
 ## Usage
 
-MCIT ToDo List is a Web Application that you can use going to https://mcit-todolist.herokuapp.com/ and creating your account. You do not need to installing or running anything in your computer to use MCIT ToDo List, you only need internet access and a browser.
+Currently, the MCIT ToDo List can only be deployed on a local server. However, the ability to connect to a Mongo Atlas server has already been implented. Ideally, the MCIT ToDo List would be a Web Application that you can use going to https://mcit-todolist.herokuapp.com/ and creating your account. However, we were not able to get authentication to work with Heroku at this time. 
 
 ### Prerequisites
 
-What prerequisites must be installed in order to run your project, and how do you install them?
-
-```
-You need to have a browser and Internet access.
-```
+Node.js and MongoDB need to be installed on your computer in order to run the project locally. Instructions for your OS can be found on their respective websites.
 
 ### Installation
 
-Give a step-by-step rundown of how to **install** your project.
+After installing Node.js and MongoDB, clone the repository. In the working directory, run the following command:
+```
+npm install
 
-State step 1.
 
-Go to [MCIT ToDo List](https://mcit-todolist.herokuapp.com/)
+```
+This should install all necessary node packagese to run the local app.
 
 
 ### Deployment
 
-Give a step-by-step rundown of how to **use** your project. Including screenshots in this section can be highly effective for highlighting specific features of your project.
+To deploy the app, run the following command in the terminal:
 
-State step 1.
 ```
-Provide code samples in this fenced code block.
+node server.js
 ```
-
-State step 2.
-```
-Provide code samples in this fenced code block.
-```
-
-Etc.
+The app should then be running on localhost:3000
 
 ## Additional information
 
@@ -66,7 +57,7 @@ Which frameworks, libraries, or other tools did you use to create your project?
 
 Use anyone else's code? Inspired by a particular project? List / link here.
 
-* [Tutorial on user authentication](https://scotch.io/tutorials/easy-node-authentication-setup-and-local) - This tutorial was helpful in shaping how to structure the project as well as implement passwords
+* [Tutorial on user authentication](https://scotch.io/tutorials/easy-node-authentication-setup-and-local) - This tutorial was helpful in shaping how to structure the project as well as implement passwords.
 * Item 2 
 * Item 3
 
