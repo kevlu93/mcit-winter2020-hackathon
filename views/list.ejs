@@ -11,17 +11,19 @@
     <% newListItems.forEach( (item)=>{ %>
       <form class="item" action="/delete" method="post">
         <div class="item">
-          <input type="checkbox" onclick="this.form.submit()" name="checkbox" value = <%=  item._id  %>>
-          <p><%=  item.name  %></p>
+          <input type="checkbox" onclick="this.form.submit()" name="checkbox" value = <%=  item._id%>>
+          <p><%= item.name %></p>
         </div>
         <!-- to send data to identify right list that is hidden from user -->
         <input type="hidden" name="listName" value="<%= listTitle %>"></input>
+        <input type="hidden" name="userID" value="<%= userId %>"></input>
       </form>
       <% }); %>
 
       <form class="item" action="/" method="post">
-        <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
-        <button type="submit" name="list" value = <%= listTitle %>>+</button>
+        <input type="text" name="newItem" placeholder="New Item" autocomplete="off" required>
+        <button type="submit" name="list" value = <%= listTitle%>>+</button>
+        <input type="hidden" name="userid" value ="<%= userId %>"></input>
       </form>
   </div>
 
