@@ -21,7 +21,7 @@ const session = require('express-session');
 // Coment out when testing locally and replace with above
 const user = process.env.user;
 const password = process.env.password;
-appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority&ssl=true"
+appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority"
 
 // appDbUrl = "mongodb://"+user+":"+ password + "@clusterdefault-shard-00-00.faspm.mongodb.net:27017,clusterdefault-shard-00-01.faspm.mongodb.net:27017,clusterdefault-shard-00-02.faspm.mongodb.net:27017/tododb?ssl=true&replicaSet=atlas-p28bkx-shard-0&authSource=admin&retryWrites=true&w=majority"
 
