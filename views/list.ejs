@@ -24,7 +24,10 @@
 
       <form class="item" action="/" method="post">
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off" required>
-        <button type="submit" name="list" value = <%= listTitle %>>+</button>
+        <!-- sends list name, list id, and user id to the getter in manageTasks.js-->
+        <button type="submit" name="list" value = <%= listTitle%>>+</button>
+        <input type="hidden" name="userid" value ="<%= userId %>"></input>
+        <input type="hidden" name="listid" value = "<%= listId %>"></form></input>
       </form>
   </div>
 
