@@ -41,10 +41,9 @@ node server.js
 The app should then be running on localhost:3000
 
 ## Additional information
+Future extensions of this project include the afore-mentioned Heroku deployment, as well as some sort of opt-in community based "Popular Tasks" feed, which could help users come up with ideas on what they should be doing for the classes, ie. an external paper or reading that many classmates found useful. This would also require some sort of language processing that can group similarly worded or themed tasks together. Additionally, we would also want to overhaul the front-end of the app to use the React framework. By integrating React with the existing Express, Node, and MongoDB frameworks, we'd be able to truly modernize the app.
 
 ### Tools used
-
-Which frameworks, libraries, or other tools did you use to create your project?
 
 * [MongoDB](https://www.mongodb.com/) - General purpose, document-based, distributed database built for modern application developers and for the cloud era.
 * [Node.js](https://nodejs.org/en/) - Asynchronous event-driven JavaScript runtime designed to build scalable network applications.
@@ -53,16 +52,5 @@ Which frameworks, libraries, or other tools did you use to create your project?
 
 ### Acknowledgments
 
-Use anyone else's code? Inspired by a particular project? List / link here.
-
 * [Tutorial on user authentication](https://scotch.io/tutorials/easy-node-authentication-setup-and-local) - This tutorial was helpful in shaping how to structure the project as well as implement passwords.
-* Item 2 
-* Item 3
 
-### License
-
-If desired, add a section for your license. Reference sites like https://choosealicense.com can help you choose which license meets your needs.
-
-*For example:*
-
->This package is licensed under the GNU General Public License v3.0 (<a href="https://choosealicense.com/licenses/gpl-3.0/" target="_blank">GPL-3</a>).
