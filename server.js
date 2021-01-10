@@ -30,7 +30,7 @@ appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mon
 //configure db and passports
 mongoose.connect(appDbUrl, {
   useNewUrlParser: true,
-  // useUnifiedTopology: true,
+  useUnifiedTopology: true,
   useFindAndModify: false
 }).then(() => {
   console.log('connect: success')
