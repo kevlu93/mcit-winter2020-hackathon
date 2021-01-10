@@ -6,25 +6,26 @@ module.exports = function (app) {
 
     //task list pages
     app.get('/:listName', isLoggedIn, function(req, res, done) {
-        console.log(req.user._id);
         const listKey = req.params.listName;
         const page = _.capitalize(listKey);
         List.findOne({
             createdBy: req.user._id
             , name: page})
             .populate('todo')
+            .populate('completed')
             .exec(function (err, list) {
                 if (err) {
                     console.log("error")
                 }
                 if (list) {
                     console.log("found list")
-                    console.log(list.todo)
                     res.render('list.ejs', {
                         user : req.user
                         , userId : req.user._id
                         , listTitle : page
                         , newListItems : list.todo
+                        , completedItems : list.completed
+                        , listId : list._id
                     });
                 } else {
                     console.log("Making list")
@@ -37,6 +38,7 @@ module.exports = function (app) {
                         if (err)
                             throw err;
                     });
+                    //console.log("Finished making list")
                     res.redirect("/" + listKey);
                 }
             })
@@ -46,16 +48,16 @@ module.exports = function (app) {
 
     //add a task
     app.post("/", function(req, res) {
-
         const itemName = req.body.newItem;
         const listName = req.body.list;
         const userId = req.body.userid;
-        console.log(userId)
-        console.log(listName)
+        const listId = req.body.listid;
         const newItem = new Item({
             name: itemName
             , createdBy: userId
             , listName: listName
+            , listId: listId
+            , completed : false
         })
         newItem.save();
         List.findOne(
@@ -63,7 +65,6 @@ module.exports = function (app) {
                 createdBy : userId 
                 , name : listName
             }, function(err, list) {
-                console.log(list.name)
                 list.todo.push(newItem);
                 list.save();
                 res.redirect("/" + listName)
@@ -75,12 +76,20 @@ module.exports = function (app) {
     app.post("/delete", (req, res) => {
         const checkedItemId = req.body.checkbox;
         const listName = req.body.listName;
-
-        Item.findByIdAndRemove(checkedItemId, (err) => {
+        const listId = req.body.listID
+        Item.findById(checkedItemId, (err, item) => {
             if (err) {
               console.log(err);
             } else {
               console.log("task completed");
+              List.findById(listId, function(err, list) {
+                  item.completed = true
+                  item.save();
+                  console.log(item.name)
+                  list.todo.pull(item)
+                  list.completed.push(item);
+                  list.save();
+              })
               res.redirect("/"+listName);
             }
         });

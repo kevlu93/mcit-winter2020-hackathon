@@ -17,6 +17,7 @@
         <!-- to send data to identify right list that is hidden from user -->
         <input type="hidden" name="listName" value="<%= listTitle %>"></input>
         <input type="hidden" name="userID" value="<%= userId %>"></input>
+        <input type="hidden" name="listID" value="<%= listId %>"></input>
       </form>
       <% }); %>
 
@@ -24,7 +25,18 @@
         <input type="text" name="newItem" placeholder="New Item" autocomplete="off" required>
         <button type="submit" name="list" value = <%= listTitle%>>+</button>
         <input type="hidden" name="userid" value ="<%= userId %>"></input>
+        <input type="hidden" name="listid" value = "<%= listId %>"></form></input>
       </form>
   </div>
+
+  <div class="box">
+    <p>Take a look at what the community has recently completed!</p>
+    <ul class="list-group">
+      <% completedItems.forEach( (item)=>{ %>
+      <li class = "list-group-item"><%= item.name %></li>
+      <% }); %>
+    </ul>
+  </div>
+
 
 <%- include("partials/footer") -%>
