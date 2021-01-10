@@ -4,8 +4,8 @@ const _ = require('lodash');
 
 /**
  * This function takes in the app as the parameter.
- * It handles various tasks related to building and managing the task lists 
- * @param app 
+ * It handles various tasks related to building and managing the task lists
+ * @param app
  */
 module.exports = function (app) {
 
@@ -17,12 +17,15 @@ module.exports = function (app) {
      */
     app.get('/:listName', isLoggedIn, function(req, res, done) {
         const listKey = req.params.listName;
+        if(listKey == 'favicon.ico') {
+            listKey = 'general';
+        }
         const page = _.capitalize(listKey);
         List.findOne({
-            //queries for the relevant list that has been created by the given user 
+            //queries for the relevant list that has been created by the given user
             createdBy: req.user._id
             , name: page})
-            //If the list is found, populate its todo and completed arrays so that we can pass the Item objects stored within to the list.ejs template 
+            //If the list is found, populate its todo and completed arrays so that we can pass the Item objects stored within to the list.ejs template
             .populate('todo')
             .populate('completed')
             //Execute the query and populate commands
@@ -56,11 +59,11 @@ module.exports = function (app) {
                         //console.log("Finished making list")
                         res.redirect("/" + listKey);
                     });
-                    
+
                 }
             })
-            
-        
+
+
     })
 
     /**
@@ -87,7 +90,7 @@ module.exports = function (app) {
         //Queries for the list where the request was made from, and pushes the new Item to the list's todo array
         List.findOne(
             {
-                createdBy : userId 
+                createdBy : userId
                 , name : listName
             }, function(err, list) {
                 //takes the resulting List document and adds the item to its todo array
@@ -98,7 +101,7 @@ module.exports = function (app) {
                     }
                     res.redirect("/" + listName)
                 });
-                
+
             }
         )
     });
@@ -138,7 +141,7 @@ module.exports = function (app) {
             }
         });
     });
-      
+
     //function that makes sure a user is logged in
     function isLoggedIn(req, res, next) {
         //if user is authenticated, continue
