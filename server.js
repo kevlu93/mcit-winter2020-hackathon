@@ -12,6 +12,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const MemoryStore = require('memorystore')(session)
 
 // //const appDb = require('./config/database.js');
 // appDbUrl = "mongodb://localhost:27017/todolistDB"
@@ -21,12 +22,12 @@ const session = require('express-session');
 // Coment out when testing locally and replace with above
 const user = process.env.user;
 const password = process.env.password;
-appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority&ssl=true"
+appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority"
 
 //configure db and passports
 mongoose.connect(appDbUrl, {
   useNewUrlParser: true,
-  // useUnifiedTopology: true,
+  useUnifiedTopology: true,
   useFindAndModify: false
 }).then(() => {
   console.log('connect: success')
@@ -57,7 +58,9 @@ app.use(session({
   secret: 'secret',
   resave: false,
   saveUninitialized: false,
-  proxy: true
+  store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
 }))
 app.use(passport.initialize());
 app.use(passport.session());
