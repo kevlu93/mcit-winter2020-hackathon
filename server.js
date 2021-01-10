@@ -1,6 +1,6 @@
-// //should be added at very beginning, to use environment varialbes
-// //comment out dotenv and enter environment variables on heroku when deploying, else decoment
-// require('dotenv').config();
+//should be added at very beginning, to use environment varialbes
+//comment out dotenv and enter environment variables on heroku when deploying, else decoment
+require('dotenv').config();
 
 const express = require('express');
 const app = express();
@@ -26,7 +26,7 @@ appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mon
 //configure db and passports
 mongoose.connect(appDbUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
+  // useUnifiedTopology: true,
   useFindAndModify: false
 }).then(() => {
   console.log('connect: success')
