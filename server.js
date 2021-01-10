@@ -24,13 +24,11 @@ const password = process.env.password;
 appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority"
 
 //configure db and passports
-mongoose.connect(appDbUrl,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-    }
-);
+mongoose.connect(appDbUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+});
 require('./config/passport')(passport);
 
 //setup express
@@ -41,6 +39,8 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.enable('trust proxy');
+
 //set up ejs and set the static files directory
 app.set('view engine', 'ejs');
 //When deploying webpage, folder that is checked by express for other files
@@ -48,9 +48,10 @@ app.use(express.static('public'))
 
 //setup passport
 app.use(session({
-    secret: 'secret'
-    , resave: false
-    , saveUninitialized: false
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false,
+  proxy: true
 }))
 app.use(passport.initialize());
 app.use(passport.session());
@@ -62,10 +63,10 @@ require('./app/manageTasks.js')(app);
 
 //start the server
 let port = process.env.PORT;
-if  (port == null || port == "") {
-    port = 3000;
+if (port == null || port == "") {
+  port = 3000;
 }
 
 app.listen(port, function() {
-    console.log("Server listening on port" + port);
-  });
+  console.log("Server listening on port" + port);
+});
