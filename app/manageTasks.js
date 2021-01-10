@@ -17,9 +17,6 @@ module.exports = function (app) {
      */
     app.get('/:listName', isLoggedIn, function(req, res, done) {
         const listKey = req.params.listName;
-        if(listKey == 'favicon.ico') {
-            
-        }
         const page = _.capitalize(listKey);
         List.findOne({
             //queries for the relevant list that has been created by the given user 
