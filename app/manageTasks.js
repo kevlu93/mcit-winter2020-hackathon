@@ -17,6 +17,9 @@ module.exports = function (app) {
      */
     app.get('/:listName', isLoggedIn, function(req, res, done) {
         const listKey = req.params.listName;
+        if(listKey == 'favicon.ico') {
+            
+        }
         const page = _.capitalize(listKey);
         List.findOne({
             //queries for the relevant list that has been created by the given user 
@@ -53,9 +56,10 @@ module.exports = function (app) {
                     newList.save(function(err) {
                         if (err)
                             throw err;
+                        //console.log("Finished making list")
+                        res.redirect("/" + listKey);
                     });
-                    //console.log("Finished making list")
-                    res.redirect("/" + listKey);
+                    
                 }
             })
             
@@ -91,8 +95,13 @@ module.exports = function (app) {
             }, function(err, list) {
                 //takes the resulting List document and adds the item to its todo array
                 list.todo.push(newItem);
-                list.save();
-                res.redirect("/" + listName)
+                list.save( function(err) {
+                    if (err) {
+                        throw err
+                    }
+                    res.redirect("/" + listName)
+                });
+                
             }
         )
     });
