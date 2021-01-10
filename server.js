@@ -1,6 +1,6 @@
-//should be added at very beginning, to use environment varialbes
-//comment out dotenv and enter environment variables on heroku when deploying, else decoment
-require('dotenv').config();
+// //should be added at very beginning, to use environment varialbes
+// //comment out dotenv and enter environment variables on heroku when deploying, else decoment
+// require('dotenv').config();
 
 const express = require('express');
 const app = express();
@@ -62,10 +62,12 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   store: new mongodbStore({
-        mongooseConnection: mongoose.connection,
-        touchAfter: 24 * 3600
-    }),
-    cookie: { maxAge: 1000 * 60 * 15 }
+    mongooseConnection: mongoose.connection,
+    touchAfter: 24 * 3600
+  }),
+  cookie: {
+    maxAge: 1000 * 60 * 15
+  }
 }))
 app.use(passport.initialize());
 app.use(passport.session());
