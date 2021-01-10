@@ -13,15 +13,15 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-//const appDb = require('./config/database.js');
-appDbUrl = "mongodb://localhost:27017/todolistDB"
+// //const appDb = require('./config/database.js');
+// appDbUrl = "mongodb://localhost:27017/todolistDB"
 
 // ****set-up remote server - mongoose **********
-//Connect to MongoDB Atlas
-//Coment out when testing locally and replace with above
-//const user = process.env.user;
-//const password = process.env.password;
-//appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/toDoDB?retryWrites=true&w=majority"
+// // Connect to MongoDB Atlas
+// Coment out when testing locally and replace with above
+const user = process.env.user;
+const password = process.env.password;
+appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority"
 
 //configure db and passports
 mongoose.connect(appDbUrl,
@@ -57,7 +57,7 @@ app.use(passport.session());
 app.use(flash());
 
 //start routes
-require('./app/routes.js')(app, passport); 
+require('./app/routes.js')(app, passport);
 require('./app/manageTasks.js')(app);
 
 //start the server
