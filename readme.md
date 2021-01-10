@@ -6,12 +6,12 @@
 
 Simple ToDo Web Application that can help MCIT Online students track their tasks per course. Students can also see what tasks their (anonymous) classmates have recently completed.
 
-Include the link to your Devpost project page here: [Devpost](https://...)
+Devpost page: [Devpost](https://...)
 
 ### Authors
 
 * **Claudia Fernandes** - Devpost ID – clafer@seas.upenn.edu – [GitHub](https://github.com/camf87)
-* **Kevin Lu** - Devpost ID – klu93@seas.upenn.edu – [GitHub](https://github.com/kevlu93)
+* **Kevin Lu** - https://devpost.com/klu93 – klu93@seas.upenn.edu – [GitHub](https://github.com/kevlu93)
 * **Francisco Urra** - https://devpost.com/Francisco-hub-eng – furraqui@seas.upenn.edu – [GitHub](https://github.com/Francisco-hub-eng)
 
 ## Usage
