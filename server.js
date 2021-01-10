@@ -55,8 +55,8 @@ app.use(express.static('public'))
 //setup passport
 app.use(session({
   secret: 'secret',
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   proxy: true
 }))
 app.use(passport.initialize());
