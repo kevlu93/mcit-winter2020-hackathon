@@ -27,8 +27,6 @@ Node.js and MongoDB need to be installed on your computer in order to run the pr
 After installing Node.js and MongoDB, clone the repository. In the working directory, run the following command:
 ```
 npm install
-
-
 ```
 This should install all necessary node packagese to run the local app.
 
