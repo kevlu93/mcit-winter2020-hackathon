@@ -39,9 +39,10 @@ module.exports = function(passport) {
 
                 //if the user already exists, don't do anything
                 if (user) {
+                    console.log("User found")
                     return done(null, false);
                 } else {
-
+                    console.log("Trying to create the user")
                     // create the user
                     var newUser = new User();
 
@@ -55,6 +56,7 @@ module.exports = function(passport) {
                             throw err;
                         return done(null, newUser);
                     });
+                    console.log("User created")
                 }
             });    
         });
