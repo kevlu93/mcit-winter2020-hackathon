@@ -21,7 +21,7 @@ const session = require('express-session');
 // Coment out when testing locally and replace with above
 const user = process.env.user;
 const password = process.env.password;
-appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority"
+appDbUrl = "mongodb+srv://" + user + ":" + password + "@clusterdefault.faspm.mongodb.net/tododb?retryWrites=true&w=majority&ssl=true"
 
 //configure db and passports
 mongoose.connect(appDbUrl, {
