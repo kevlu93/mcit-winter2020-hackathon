@@ -130,9 +130,14 @@ module.exports = function (app) {
                   list.todo.pull(item)
                   //Add the item to the list's completed array
                   list.completed.push(item);
-                  list.save();
+                  list.save(function(err) {
+                      if (err) {
+                          throw err
+                      }
+                      res.redirect("/"+listName);
+                  });
               })
-              res.redirect("/"+listName);
+              
             }
         });
     });
