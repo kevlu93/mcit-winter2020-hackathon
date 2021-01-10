@@ -11,11 +11,14 @@
     <% newListItems.forEach( (item)=>{ %>
       <form class="item" action="/delete" method="post">
         <div class="item">
-          <input type="checkbox" onclick="this.form.submit()" name="checkbox" value = <%=  item._id  %>>
-          <p><%=  item.name  %></p>
+          <input type="checkbox" onclick="this.form.submit()" name="checkbox" value = <%=  item._id%>>
+          <p><%= item.name %></p>
         </div>
         <!-- to send data to identify right list that is hidden from user -->
         <input type="hidden" name="listName" value="<%= listTitle %>"></input>
+        <!-- sends data to identify correct userid and listid-->
+        <input type="hidden" name="userID" value="<%= userId %>"></input>
+        <input type="hidden" name="listID" value="<%= listId %>"></input>
       </form>
       <% }); %>
 
@@ -24,5 +27,16 @@
         <button type="submit" name="list" value = <%= listTitle %>>+</button>
       </form>
   </div>
+
+  <div class="box">
+    <p>Your completed tasks:</p>
+    <ul class="list-group">
+      <!--goes through each Item from the to do array and prints the name as a list entry-->
+      <% completedItems.forEach( (item)=>{ %>
+      <li class = "list-group-item"><%= item.name %></li>
+      <% }); %>
+    </ul>
+  </div>
+
 
 <%- include("partials/footer") -%>
